@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {box-sizing: border-box; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
+        body{ margin: 0px; padding: 0px; overflow-x: hidden; border: none; }
+        html{ border: none; }
+        #mainContainer{
+            align-items: left; 
+            height: 100vh;
+            overflow-x: hidden;
+        }
+        .fc{align-items: center;}
+        .abso{position: absolute;}
+        .rel{position: relative;}
+        
+    </style>
+    <link rel="stylesheet" href="./posya_css/headwind.css?da33ds">
+    <title>Dashboard</title>
+</head>
+<body>
+<div class="flex-col w100 m0 p0 rel" id="mainContainer">
+<div id="toggleMenu" class="abso"></div>
+<div id="displayUsername" class="abso cw">Username</div>
+<div id="mainHeader" class="abso flex-row m0 p0 w100 thebg1">
+    <div class="flex-col m0 p0 flex-30 ab">
+    
+    </div>
+    <div class="flex-col m0 p0 flex-70 fc">
+        <h1 id="headerTxt" class="cw">Welcome to E-Posyandu Dashboard</h1>
+    </div>
+    <div class="flex-col m0 p0 flex-30">
+    </div>
+   
+</div>
+
+
+<div class="flex-col m0 abso" id="menuContainer">
+
+</div>
+
+<div class="flex-col m0 thecard1" id="contentContainer">
+    <div class="flex-row" style="height: 4vh;" id="contentHeader">
+        <div class="flex-30">
+           
+        </div>
+        <div class="flex-40 p0" style="text-align: center;">
+            <h2 class="cw m0" id="titleIframe"></h2>
+        </div>
+        <div class="flex-30 thebbor1 thebr1 anIcon" style="margin-bottom: 1vh;">
+          
+        </div>
+    </div>
+
+    <iframe class="thebr1 thebbor2 thebs1i" id="theIframe" src="" style="z-index: 3;"></iframe>
+</div>
+
+
+
+</div>
+</body>
+</html>
+<script type="text/javascript" src="./posya_js/functions.js"></script>
+<script defer>
+//url menu disini
+let srcList;
+let srcListPar = 
+["posya_form/isidata_detail_user.html", "posya_menu/Jadwalposyandu.html",
+"posya_form/isidata_anak.html","posya_form/tampil_anak.html"];
+
+let srcListEmp = ["posya_form/tambah_kunjungan.html"];
+
+let titleList;
+let titleIframePar = srcListPar;
+let titleIframeEmp = srcListEmp;
+
+let isParent = true;
+const displayUsername = document.getElementById("displayUsername");
+const header = document.getElementById("mainHeader");
+const toggler = document.getElementById("toggleMenu"); 
+const menu = document.getElementById("menuContainer");
+const content = document.getElementById("contentContainer");
+const titleIframe = document.getElementById("titleIframe")
+const theIframe = document.getElementById("theIframe");
+let menulets;
+
+
+//menggerakkan iframe container
+makeShitMove(content);
+
+//menambahkan eventlistener ke ikon menu agar dapat menavigasi iframe
+function runMenu(){
+    addMenuLets();
+    menulets = document.getElementsByClassName("menuLets");
+    for (i = 0, len = menulets.length; i < len; i++) {
+        addMenuletsListener(i);
+    }
+}
+
+
+//fungsi untuk menambahkan html ikon
+function addMenuLets(){
+    for (i = 0, len = srcList.length; i < len; i++) {
+        const menuletz = document.createElement("div");
+        menuletz.classList.add("menuLets");
+        menu.appendChild(menuletz);
+    }
+}
+
+
+//fungsi untuk menambahkan listener ikon
+function addMenuletsListener(index){
+    menulets[index].addEventListener("click", function(){
+        theIframe.src = srcList[index] + "?" + Math.random().toString();
+        titleIframe.innerText = titleList[index];
+    });
+}
+
+//untuk menyembunyikan/menampilkan menu
+toggler.addEventListener("click", toggleMenu);
+let isToggled = true;
+function toggleMenu(){
+    if(isToggled){
+        menu.style.display = "none";
+        if(window.innerHeight > window.innerWidth){
+            //alert("Please use Landscape!");
+        }
+    }else{
+        menu.style.display = "flex";
+    };
+    isToggled = !isToggled;
+}
+
+//mengambil data user dari database
+CRUD_master("/php/user/get_user.php").then(
+    function (value) { 
+            x = value[0].name;
+            if(x != undefined)
+            {   
+                if(value[0].utype == 'o' || value[0].utyoe == 'O'){
+                    displayUsername.innerText = "Logged in as Parents: " + x;
+                    srcList = srcListPar;
+                    titleList = titleIframePar;
+                    runMenu();
+                }else{
+                    displayUsername.innerText = "Logged in as Employee: " + x;
+                    srcList = srcListEmp;
+                    titleList = titleIframeEmp;
+                    runMenu();
+                    isParent = false;
+                }
+            }else{
+                displayUsername.innerText = "Error: " + value;
+            }
+            
+        },
+    function (error) { alert("Database Error!") }
+);
+</script>
+
+<style>
+#mainHeader{
+    height: 9vh;
+    z-index: 2;
+}
+#headerTxt{
+    z-index: 3;
+}
+#displayUsername{
+    z-index: 3;
+}
+#toggleMenu{
+    border: 2px solid green;
+    margin: 1vh;
+    height: 7vh;
+    width: 7vh;
+    z-index: 420;
+}
+
+#menuContainer{
+    position: absolute;
+    background-color: aliceblue;
+    border: 2px solid; 
+    resize: both;
+    overflow-y: hidden;
+    overflow-x: hidden;
+    z-index: 69;
+    padding: 1vh;
+}
+
+#contentContainer{
+    position: absolute;
+    resize: both;
+    overflow: auto;
+    z-index: 4;
+}
+
+#theIframe{
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+}
+
+.menuLets{
+    border: 2px solid purple;
+    margin: 2px;
+    transition: 0.2s;
+}
+
+.menuLets:hover{
+    border-color: green;
+}
+
+@media screen and (orientation:landscape) {
+    #displayUsername{
+        left: 10vw;
+    }
+    #mainHeader{
+        border: none;
+    }
+    #headerTxt{
+        display: block;
+    }
+    #toggleMenu{
+        width: 4vw;
+        height: 4vw;
+    }
+    #menuContainer{
+        width: 10vw;
+        height: 90vh; 
+        top: 5vw;
+    }
+    #contentContainer{
+        top: 15vh;
+        left: 19vw;
+        width: 71vw;
+        height: 80vh;
+        padding-top: 1vh;
+        padding-bottom: 1.5vh;
+        padding-left: 1.5vh;
+        padding-right: 1.5vh;
+    }
+    .menuLets{
+        height: 4vw;
+        width: 4vw;
+    }   
+    .menuLets:hover{
+        margin-left: 0.7vw;
+    }
+    #contentHeader{
+        display: flex;
+    }
+}
+
+@media screen and (orientation:portrait) {
+    #displayUsername{
+        left: 10vw;
+    }
+    #mainHeader{
+        border: none;
+    }
+    #headerTxt{
+        display: none;
+    }
+    #toggleMenu{
+        width: 12vw;
+        height: 12vw;
+    }
+    #menuContainer{
+        width: 100vw;
+        height: 87vh; 
+        top: 14vw;
+    }
+    #contentContainer{
+        width: 100vw;
+        height: 100vh;
+        padding: 0px;
+        border: none;
+    }
+    #theIframe{
+        border: none;
+    }
+    .menuLets{
+        height: 12vw;
+        width: 12vw;
+    }   
+    .menuLets:hover{
+        margin-left: 3vw;
+    }
+    #contentHeader{
+        display: none;
+    }
+}
+
+#mainContainer{
+    position: relative;
+}
+
+
+
+</style>
