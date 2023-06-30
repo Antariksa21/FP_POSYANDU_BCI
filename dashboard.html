@@ -137,7 +137,6 @@ function toggleMenu(){
 //mengambil data user dari database
 CRUD_master("/php/user/get_user.php").then(
     function (value) { 
-            console.log(value);
             x = value[0].name;
             if(x != undefined)
             {   
@@ -160,6 +159,7 @@ CRUD_master("/php/user/get_user.php").then(
         },
     function (error) { alert("Database Error!") }
 );
+
 </script>
 
 <style>
