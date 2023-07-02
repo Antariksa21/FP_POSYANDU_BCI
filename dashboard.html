@@ -7,7 +7,7 @@
     <style>
         * {box-sizing: border-box; scroll-behavior: smooth; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;}
         body{ margin: 0px; padding: 0px; overflow-x: hidden; border: none; }
-        html{ border: none; }
+        html{ border: none; } .h100{height: 100%;} .w100{width: 100%;} 
         #mainContainer{
             align-items: left; 
             height: 100vh;
@@ -18,6 +18,7 @@
         .rel{position: relative;}
         
     </style>
+    <link rel="stylesheet" href="./posya_css/form.css?211">
     <link rel="stylesheet" href="./posya_css/headwind.css?da33ds">
     <title>Dashboard</title>
 </head>
@@ -69,7 +70,7 @@
 let srcList;
 let srcListPar = 
 ["posya_form/isidata_detail_user.html", "posya_menu/Jadwalposyandu.html",
-"posya_form/isidata_anak.html","posya_form/tampil_anak.html"];
+"posya_form/isidata_anak.html","posya_form/tampil_anak.html","posya_menu/grafikKembang.html"];
 
 let srcListEmp = ["posya_form/tambah_kunjungan.html"];
 
@@ -102,11 +103,28 @@ function runMenu(){
 
 
 //fungsi untuk menambahkan html ikon
+let listAsset = ["./posya_img/Asset/isi orang tua.png", "./posya_img/Asset/JADWAL.png",
+ "./posya_img/Asset/Nambah anak  UNTUK ORANG TUA.png", "./posya_img/Asset/baby-card.png",
+"./posya_img/Asset/statistics.png"
+
+];
 function addMenuLets(){
     for (i = 0, len = srcList.length; i < len; i++) {
+        const menuletzCon = document.createElement("div");
+        menuletzCon.classList.add("letzCon");
         const menuletz = document.createElement("div");
+        for(let i=0; i<4; i++){
+            const span = document.createElement("span");
+            menuletz.appendChild(span);
+        };
+        const image = document.createElement('img');
+        image.setAttribute("src", listAsset[i]);
         menuletz.classList.add("menuLets");
-        menu.appendChild(menuletz);
+        menuletz.classList.add("border2");
+        menuletz.appendChild(image);    
+        menuletzCon.appendChild(menuletz);
+        menu.appendChild(menuletzCon);
+        
     }
 }
 
@@ -182,7 +200,7 @@ CRUD_master("/php/user/get_user.php").then(
 
 #menuContainer{
     position: absolute;
-    background-color: aliceblue;
+    background-color: none;
     border: 2px solid; 
     resize: both;
     overflow-y: hidden;
@@ -203,15 +221,21 @@ CRUD_master("/php/user/get_user.php").then(
     height: 100%;
     overflow: auto;
 }
-
-.menuLets{
-    border: 2px solid purple;
-    margin: 2px;
-    transition: 0.2s;
+.letzCon{
+    width: 100%;
 }
-
+.menuLets{
+    margin: 2px;
+    transition: 0.6s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.menuLets img{
+    transition: 0.6s;
+}
 .menuLets:hover{
-    border-color: green;
+    border-color: none;
 }
 
 @media screen and (orientation:landscape) {
@@ -246,9 +270,26 @@ CRUD_master("/php/user/get_user.php").then(
     .menuLets{
         height: 4vw;
         width: 4vw;
+        background: #f8f3e8;
+
     }   
-    .menuLets:hover{
-        margin-left: 0.7vw;
+    .menuLets img{
+        width: 90%;
+        height: 2.8vw;
+        width: 2.8vw;
+    }
+    .letzCon:hover > .menuLets{
+        margin-left: 2vw;
+        height: 5vw;
+        width: 5vw;
+        transform: rotate(135deg);
+        margin-top: 2.7vw;
+        margin-bottom: 2.7vw;
+    }
+    .letzCon:hover > .menuLets img{
+        transform: rotate(-135deg);
+        height: 3.5vw;
+        width: 3.5vw;
     }
     #contentHeader{
         display: flex;
@@ -298,7 +339,79 @@ CRUD_master("/php/user/get_user.php").then(
 #mainContainer{
     position: relative;
 }
+@keyframes btn-anim1 {
+  0% {
+    left: -100%;
+  }
+  50%,100% {
+    left: 100%;
+  }
+}
+
+@keyframes btn-anim2 {
+  0% {
+    top: -100%;
+  }
+  50%,100% {
+    top: 100%;
+  }
+}
+
+@keyframes btn-anim3 {
+  0% {
+    right: -100%;
+  }
+  50%,100% {
+    right: 100%;
+  }
+}
+
+@keyframes btn-anim4 {
+  0% {
+    bottom: -100%;
+  }
+  50%,100% {
+    bottom: 100%;
+  }
+}
+.letzCon:hover > .border2 span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, var(--warna1));
+  animation: btn-anim1 2s linear infinite;
+}
 
 
+.letzCon:hover > .border2 span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--warna1));
+  animation: btn-anim2 2s linear infinite;
+  animation-delay: .5s
+}
+
+.letzCon:hover > .border2 span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 4px;
+  background: linear-gradient(270deg, transparent, var(--warna1));
+  animation: btn-anim3 2s linear infinite;
+  animation-delay: 1s
+}
+
+.letzCon:hover > .border2 span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 4px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, var(--warna1));
+  animation: btn-anim4 2s linear infinite;
+  animation-delay: 1.5s
+}
 
 </style>
