@@ -206,3 +206,21 @@ function getUniqueValues(array) {
   // Convert the set back to an array and return it
   return [...uniqueSet];
 }
+
+function dateDiff(date1, date2) {
+  // Parse the dates as milliseconds
+  var d1 = Date.parse(date1);
+  var d2 = Date.parse(date2);
+
+  // Check if the dates are valid
+  if (isNaN(d1) || isNaN(d2)) {
+    return "Invalid date format";
+  }
+
+  // Calculate the difference in milliseconds and convert to days
+  var diff = Math.abs(d2 - d1); // absolute value to avoid negative results
+  var days = diff / (1000 * 60 * 60 * 24); // milliseconds to days
+
+  // Return the result
+  return days;
+}

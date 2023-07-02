@@ -11,7 +11,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
         if($id && ($utype == 'p' || $utype == 'P')){
             $data = json_decode(file_get_contents('php://input'), true);
-            $idd = SQL_FIREWALL($data["id"], 's');
+            $idd = SQL_FIREWALL($data["id"], 'n');
   
             echo(runSQL("
 

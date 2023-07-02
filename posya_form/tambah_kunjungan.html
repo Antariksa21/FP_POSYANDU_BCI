@@ -132,7 +132,9 @@ function shutUpdateForm(){
 
 shutUpdateForm();
 
-
+insertTanggal.oninput = function(){
+    labelTanggal.innerText = "Tanggal Kunjungan: " + dateWithMonthName(convertDate(insertTanggal.value));
+}
 
 
 function updateDateDisplay(daet){

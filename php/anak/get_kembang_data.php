@@ -5,24 +5,24 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     try{
 
         include "../functions.php";
-  
+
         $id = isLogged();
-
+       
         if($id){
-
+            $data = json_decode(file_get_contents('php://input'), true);
+            $idd = SQL_FIREWALL($data["id"], 'n');
+  
             echo(runSQL("
 
 
-            SELECT anak.nama, anak.id, anak.jenis_kelamin
-            FROM users 
-            LEFT JOIN anak on users.id = anak.id_user
-            WHERE users.id = $id;
-           
+            SELECT tanggal, detail_anak.bb, detail_anak.tb, detail_anak.lk, detail_anak.catatan, anak.tanggal_lahir 
+            FROM detail_anak 
+            LEFT JOIN anak on detail_anak.id_anak = anak.id 
+            WHERE id_anak = $idd;
 
 
             "));
             
-
         }else{
             echo(dummyJSON("Logged Out"));
         };
