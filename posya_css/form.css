@@ -326,49 +326,6 @@
               0 0 100px var(--warna1);
 }
 
-.border2:hover > span:nth-child(1) {
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(90deg, transparent, var(--warna1));
-  animation: btn-anim1 2s linear infinite;
-}
-
-
-.border2:hover > span:nth-child(2) {
-  top: -100%;
-  right: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(180deg, transparent, var(--warna1));
-  animation: btn-anim2 2s linear infinite;
-  animation-delay: .5s
-}
-
-
-
-.border2:hover > span:nth-child(3) {
-  bottom: 0;
-  right: -100%;
-  width: 100%;
-  height: 4px;
-  background: linear-gradient(270deg, transparent, var(--warna1));
-  animation: btn-anim3 2s linear infinite;
-  animation-delay: 1s
-}
-
-
-
-.border2:hover >  span:nth-child(4) {
-  bottom: -100%;
-  left: 0;
-  width: 4px;
-  height: 100%;
-  background: linear-gradient(360deg, transparent, var(--warna1));
-  animation: btn-anim4 2s linear infinite;
-  animation-delay: 1.5s
-}
 
 .border2{
     position: relative;
@@ -377,9 +334,6 @@
     background-repeat: no-repeat;
     outline: none;
     border: none;
-    padding-left: 2px;
-    padding-top: 10%;
-    padding-bottom: 10%;
     color: var(--warna1);
     font-size: 16px;
     text-decoration: none;
@@ -401,4 +355,78 @@
               0 0 25px var(--warna1),
               0 0 50px var(--warna1);
      
+}
+
+.border3 span:nth-child(1) {
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--warna1));
+  animation: btn-anim1 2s linear infinite;
+}
+
+
+.border3 span:nth-child(2) {
+  top: -100%;
+  right: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(180deg, transparent, var(--warna1));
+  animation: btn-anim2 2s linear infinite;
+  animation-delay: .5s
+}
+
+
+
+.border3 span:nth-child(3) {
+  bottom: 0;
+  right: -100%;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(270deg, transparent, var(--warna1));
+  animation: btn-anim3 2s linear infinite;
+  animation-delay: 1s
+}
+
+
+
+.border3 span:nth-child(4) {
+  bottom: -100%;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background: linear-gradient(360deg, transparent, var(--warna1));
+  animation: btn-anim4 2s linear infinite;
+  animation-delay: 1.5s
+}
+
+.border3{
+    position: relative;
+    display: inline-block;
+    background-color: transparent;
+    background-repeat: no-repeat;
+    outline: none;
+    border: none;
+    color: var(--warna1);
+    font-size: 16px;
+    text-decoration: none;
+    text-transform: uppercase;
+    overflow: hidden;
+    transition: .5s;
+    letter-spacing: 4px;
+    text-align: center;
+}
+
+.border3 span{
+  position: absolute;
+}
+
+.border3:hover {
+  background: var(--warna1);
+  color: #fff;
+  box-shadow: 0 0 5px var(--warna1),
+              0 0 25px var(--warna1),
+              0 0 50px var(--warna1),
+              0 0 100px var(--warna1);
 }

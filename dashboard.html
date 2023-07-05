@@ -13,18 +13,24 @@
             height: 100vh;
             overflow-x: hidden;
         }
-        .fc{align-items: center;}
+        .fc{align-items: center; justify-content: center;}
         .abso{position: absolute;}
         .rel{position: relative;}
         
     </style>
-    <link rel="stylesheet" href="./posya_css/form.css?211">
+    <link rel="stylesheet" href="./posya_css/form.css?12345">
     <link rel="stylesheet" href="./posya_css/headwind.css?da33ds">
     <title>Dashboard</title>
 </head>
 <body>
 <div class="flex-col w100 m0 p0 rel" id="mainContainer">
-<div id="toggleMenu" class="abso"></div>
+<div id="toggleMenu" class="abso border3 flex-col fc">
+    <span></span>
+    <span></span>
+    <span></span>
+    <span></span>
+<img src="/posya_img/Asset/menu.png">
+</div>
 <div id="displayUsername" class="abso cw">Username</div>
 <div id="mainHeader" class="abso flex-row m0 p0 w100 thebg1">
     <div class="flex-col m0 p0 flex-30 ab">
@@ -75,8 +81,8 @@ let srcListPar =
 let srcListEmp = ["posya_form/tambah_kunjungan.html"];
 
 let titleList;
-let titleIframePar = srcListPar;
-let titleIframeEmp = srcListEmp;
+let titleIframePar = ["Isi Data Diri", "Jadwal Posyandu", "Isi Data Anak", "Tampil Semua Anak", "Data Kembang Anak"]
+let titleIframeEmp = ["Tambah Kunjungan Anak"]
 
 let isParent = true;
 const displayUsername = document.getElementById("displayUsername");
@@ -95,7 +101,7 @@ makeShitMove(content);
 //menambahkan eventlistener ke ikon menu agar dapat menavigasi iframe
 function runMenu(){
     addMenuLets();
-    menulets = document.getElementsByClassName("menuLets");
+    menulets = document.getElementsByClassName("letzCon");
     for (i = 0, len = menulets.length; i < len; i++) {
         addMenuletsListener(i);
     }
@@ -103,11 +109,13 @@ function runMenu(){
 
 
 //fungsi untuk menambahkan html ikon
-let listAsset = ["./posya_img/Asset/isi orang tua.png", "./posya_img/Asset/JADWAL.png",
+let listAsset;
+let listAssetO = ["./posya_img/Asset/isi orang tua.png", "./posya_img/time/calendar.png",
  "./posya_img/Asset/Nambah anak  UNTUK ORANG TUA.png", "./posya_img/Asset/baby-card.png",
 "./posya_img/Asset/statistics.png"
 
 ];
+let listAssetE = ["./posya_img/notes/Document Medicine.png"]
 function addMenuLets(){
     for (i = 0, len = srcList.length; i < len; i++) {
         const menuletzCon = document.createElement("div");
@@ -137,17 +145,30 @@ function addMenuletsListener(index){
     });
 }
 
+function hideMenu(){
+    menu.style.display = "none";
+}
+function showMenu(){
+    menu.style.display = "block";
+}
+
+
 //untuk menyembunyikan/menampilkan menu
 toggler.addEventListener("click", toggleMenu);
 let isToggled = true;
 function toggleMenu(){
     if(isToggled){
-        menu.style.display = "none";
-        if(window.innerHeight > window.innerWidth){
-            //alert("Please use Landscape!");
-        }
+
+        menu.style.animation = "close1 0.5s linear";
+        toggler.style.webkitFilter  = "invert(40%)";
+        setTimeout(hideMenu, 510);
+        
+
     }else{
-        menu.style.display = "flex";
+        toggler.style.webkitFilter  = "invert(0%)";
+        menu.style.animation = "open1 0.5s linear";
+        showMenu();
+        
     };
     isToggled = !isToggled;
 }
@@ -162,11 +183,13 @@ CRUD_master("/php/user/get_user.php").then(
                     displayUsername.innerText = "Logged in as Parents: " + x;
                     srcList = srcListPar;
                     titleList = titleIframePar;
+                    listAsset = listAssetO;
                     runMenu();
                 }else{
                     displayUsername.innerText = "Logged in as Employee: " + x;
                     srcList = srcListEmp;
                     titleList = titleIframeEmp;
+                    listAsset = listAssetE;
                     runMenu();
                     isParent = false;
                 }
@@ -178,8 +201,29 @@ CRUD_master("/php/user/get_user.php").then(
     function (error) { alert("Database Error!") }
 );
 </script>
-
 <style>
+
+@keyframes close1 {
+  0% {
+    left: 0;
+
+  }
+  100% {
+    left: 100%;
+    top: 50%;
+  }
+}
+
+@keyframes open1 {
+  0% {
+    left: 100%;
+  }
+  100% {
+    left: 0;
+  }
+}
+
+
 #mainHeader{
     height: 9vh;
     z-index: 2;
@@ -191,19 +235,16 @@ CRUD_master("/php/user/get_user.php").then(
     z-index: 3;
 }
 #toggleMenu{
-    border: 2px solid green;
-    margin: 1vh;
-    height: 7vh;
-    width: 7vh;
+    background: #f8f3e8;
+    margin: 1.2vh;
     z-index: 420;
 }
 
 #menuContainer{
     position: absolute;
     background-color: none;
-    border: 2px solid; 
     resize: both;
-    overflow-y: hidden;
+    overflow-y: auto;
     overflow-x: hidden;
     z-index: 69;
     padding: 1vh;
@@ -222,12 +263,13 @@ CRUD_master("/php/user/get_user.php").then(
     overflow: auto;
 }
 .letzCon{
-    width: 100%;
+    height: auto;
 }
 .menuLets{
     margin: 2px;
     transition: 0.6s;
     display: flex;
+    background: #f8f3e8;
     justify-content: center;
     align-items: center;
 }
@@ -252,8 +294,12 @@ CRUD_master("/php/user/get_user.php").then(
         width: 4vw;
         height: 4vw;
     }
+    #toggleMenu img{
+        width: 3.4vw;
+        height: 3.4vw;
+    }
     #menuContainer{
-        width: 10vw;
+        width: 20vw;
         height: 90vh; 
         top: 5vw;
     }
@@ -270,11 +316,8 @@ CRUD_master("/php/user/get_user.php").then(
     .menuLets{
         height: 4vw;
         width: 4vw;
-        background: #f8f3e8;
-
     }   
     .menuLets img{
-        width: 90%;
         height: 2.8vw;
         width: 2.8vw;
     }
@@ -283,8 +326,8 @@ CRUD_master("/php/user/get_user.php").then(
         height: 5vw;
         width: 5vw;
         transform: rotate(135deg);
-        margin-top: 2.7vw;
-        margin-bottom: 2.7vw;
+        margin-top: 2vw;
+        margin-bottom: 2vw;
     }
     .letzCon:hover > .menuLets img{
         transform: rotate(-135deg);
@@ -310,6 +353,10 @@ CRUD_master("/php/user/get_user.php").then(
         width: 12vw;
         height: 12vw;
     }
+    #toggleMenu img{
+        width: 12vw;
+        height: 12vw;
+    }
     #menuContainer{
         width: 100vw;
         height: 87vh; 
@@ -325,11 +372,28 @@ CRUD_master("/php/user/get_user.php").then(
         border: none;
     }
     .menuLets{
-        height: 12vw;
         width: 12vw;
+        height: 12vw;
+        border: 2px solid black;
+        margin-top: 1vw;
+        margin-bottom: 1vw;
     }   
-    .menuLets:hover{
-        margin-left: 3vw;
+    .menuLets img{
+        width: 9vw;
+    }
+    .letzCon:hover > .menuLets{
+        margin-left: 4vw;
+        height: 14vw;
+        width: 14vw;
+        transform: rotate(135deg);
+        margin-top: 5vw;
+        margin-bottom: 5vw;
+        border: none;
+    }
+    .letzCon:hover > .menuLets img{
+        transform: rotate(-135deg);
+        height: 8vw;
+        width: 8vw;
     }
     #contentHeader{
         display: none;
