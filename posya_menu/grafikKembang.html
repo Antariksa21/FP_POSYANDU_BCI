@@ -58,7 +58,9 @@ let maxLen;
 let the2Genders;
 let namax;
 
-selectBar.oninput = function(){
+selectBar.oninput = generateGraph;
+
+function generateGraph(){
     getKembangData(childs[selectBar.value].id);
     the2Genders = childs[selectBar.value].jenis_kelamin;
     namax = childs[selectBar.value].nama;
@@ -82,6 +84,7 @@ CRUD_master("../php/user/get_user_anak.php", []).then(
         if(value !== null){
             childs = value;
             createOptions();
+            generateGraph();
         };
 
     },
@@ -95,6 +98,7 @@ function getKembangData(id){
             kembangData = [];
             if(value !== null){
                 kembangData = value;
+                
             };
             updateChart();
         },
@@ -102,6 +106,9 @@ function getKembangData(id){
     );
     
 }
+
+
+
 //pesan
 function messanger(ori, ideal){
     let mess1;
