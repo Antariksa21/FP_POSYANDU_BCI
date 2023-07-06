@@ -1,87 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/water.css@2/out/water.css">
-    <title>Landing Page</title>
-</head>
-<body>
-<div style="display: flex; align-items: center; flex-direction: column;">
-    <h1 id="context">You are Logged Out LOL</h1>
-    <p><a href="rewgister.html">Register</a></p>
-    <p><a href="lowgin.html">Login</a></p>
-    <p><a href="/php/logout.php">Logout</a></p>
-    <p id="btnDash" style="display: none;"><a href="dashboard.html">Dashboard</a></p>
-
-    <div style="display: flex; align-items: center; flex-direction: column;">
-        <input type="text" id="input1">
-        <button onclick="uploadData()">Upload Message</button>
-        <button onclick="downloadData()">Download Message</button>        
-            <div id="output1" style="display: flex; align-items: center; flex-direction: column;">
-                
-            </div >
-
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Landing Page | Market Product</title>
+    <link rel="stylesheet" href="./posya_css/style.css?5122" />
+  </head><style>body {
+    background-image: url("./posya_img/landingpage/ruangan2.jpg");
+    background-size: cover;}</style>
+  <body>
+    <div class="wrapper">
+      <div class="nav">
+        <div class="logo">
+          <a href="#">
+            <p>E POSYANDU</p>
+          </a>
+        </div>
+        <ul>
+            <li><a href="dashboard.html" id="btnDash" style="display: none;">Dashboard</a></li>
+            <li><a href="rewgister.html"  id="btnReg" style="display: block;">Register</a></li>
+            <li><a href="lowgin.html">Login</a></li>
+            <li><a href="/php/logout.php">Logout</a></li>
+          
+        </ul>
+      </div>
+      <div class="header">
+        <h1>WEBSITE <span>E POSYANDU</span></h1>
+      </div>
+      <div class="content-header">
+        <p>
+          Muara digital adalah platform penyedia layanan digital guna
+          mempermudah jalannya bisnis dan industri anda didalam kemajuan
+          teknologi.
+        </p>
+        <br />
+        
+      </div>
+      <div class="image1">
+        <p id="context"></p>
+        <img src="./posya_img/landingpage/Jaga.jpg"  />
+      </div>
     </div>
-
-</div>
-</body>
-</html>
-
 <script type="text/javascript" src="./posya_js/functions.js"></script>
 <script defer>
 
-let btnDash = document.getElementById("btnDash");
-let x;
+    let btnDash = document.getElementById("btnDash");
+    let btnReg = document.getElementById("btnReg");
+    let context = document.getElementById("context");
+    let x;
 
-CRUD_master("/php/user/get_user.php").then(
-    function (value) { 
-            x = value[0].name;
-            if(x != undefined)
-            {
-                document.getElementById("context").innerHTML = "Hello, " + x;
-                btnDash.style.display = "block";
-            };
-        },
-    function (error) { alert("Database Error!") }
-);
-
-function uploadData(){
-
-    let inputan = document.getElementById("input1").value;
-
-    CRUD_master("/php/random/insert_data.php", {'val1': inputan}).then(
+    CRUD_master("/php/user/get_user.php").then(
         function (value) { 
-                console.log(value);
+                x = value[0].name;
+                if(x != undefined)
+                {
+                    
+                    btnDash.style.display = "block";
+                    btnReg.style.display = "none";   
 
-            },
-        function (error) { alert("Database Error!") }
-    );
-}
+                    if(value[0].utype == 'o' || value[0].utype == ')'){
+                        context.innerHTML = "Welcome, Ortu: " + x;
+                    }else{
+                        context.innerHTML = "Welcome, Petugas: " + x;
+                    }
 
-function downloadData(){
-
-    let outputan = document.getElementById("output1");
-
-    CRUD_master("/php/random/get_data.php").then(
-        function (value) { 
-                console.log(value);             
-                let arr = value;
-
-                for (i = 0, len = arr.length; i < len; i++) {
-                    const p = document.createElement("p");
-                    p.innerText = i + " " + arr[i].data1;
-                    console.log(i);
-                    outputan.insertBefore(p, outputan.children[0]);
                 };
-
-
             },
         function (error) { alert("Database Error!") }
     );
-}
-
-
-
-
 </script>
+    <style>
+
+
+
+    @media screen and (orientation:landscape) {
+        #context{
+            margin-right: 25vw;
+        }
+        .nav ul li {
+            font-size: 20px;
+        }
+        .header {
+            top: 40%;
+            left: 72%;
+        }
+        .image1 {
+            top: 50%;
+            left: 22%;
+        }
+    }
+    @media screen and (orientation:portrait) {
+        #context{
+            margin-right: 15vw;
+        }
+        .nav ul li {
+            font-size: 20px;
+        }
+        .header {
+            top: 40%;
+            left: 52%;
+        }
+        .content-header{
+            margin-top: 50px;
+        }
+
+        .image1 {
+            top: 60%;
+            left: 22%;
+        }
+    }
+
+
+    </style>
+  </body>
+</html>

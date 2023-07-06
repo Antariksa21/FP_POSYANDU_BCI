@@ -188,8 +188,11 @@ let config = {
                 ticks: {color: 'white'},
                 title: {
                     display: true,
-                    text: 'Umur(hari)',
-                    color: 'white'
+                    text: 'Umur (hari)',
+                    color: 'white',
+                    font:{
+                        size: 20
+                    }
                 }
 
             },
@@ -198,7 +201,10 @@ let config = {
                 title: {
                     display: true,
                     text: 'Data Komposit',
-                    color: 'white'
+                    color: 'white',
+                    font:{
+                        size: 20
+                    }
                 }
 
             }
@@ -216,21 +222,34 @@ let config = {
                     label:((tooltipItem, data) => {
                         let dtsI = tooltipItem.datasetIndex;
                         let dtI = tooltipItem.dataIndex;
-                        let umur = tooltipItem.chart.data.datasets[dtsI].data[dtI].x;
-                        let data1 = tooltipItem.chart.data.datasets[dtsI].data[dtI].y;
+                        let umur;
+                        let data1;
                         let datasetInduex;
                         let beratIdeal;
                         let tingiIdeal;
                         let lingkarIdeal;
 
-                        if(dtsI == 3 || dtsI == 4 || dtsI == 5 ){console.log(umur); 
-                                
+                        function hitungUmur(){
                             datasetInduex = maxLen - (maxLen - umur);
-                           
-                            console.log(datasetInduex);
+
                             beratIdeal = tooltipItem.chart.data.datasets[0].data[datasetInduex].y;
                             tingiIdeal = tooltipItem.chart.data.datasets[1].data[datasetInduex].y;
                             lingkarIdeal = tooltipItem.chart.data.datasets[2].data[datasetInduex].y;
+                        }
+               
+
+                        if((dtsI == 3 || dtsI == 4 || dtsI == 5) && dtI<1856){
+                            umur = tooltipItem.chart.data.datasets[dtsI].data[dtI].x;
+                            data1 = tooltipItem.chart.data.datasets[dtsI].data[dtI].y;
+                            hitungUmur();
+
+                        }else if(dtsI == 3 || dtsI == 4 || dtsI == 5){
+                            data1 = tooltipItem.chart.data.datasets[dtsI].data[dtI].y;
+                            umur = maxLen;
+                            hitungUmur();
+                        }else if(dtI<1856){
+                            umur = tooltipItem.chart.data.datasets[dtsI].data[dtI].x;
+                            data1 = tooltipItem.chart.data.datasets[dtsI].data[dtI].y;
                         };
 
 

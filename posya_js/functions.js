@@ -81,6 +81,9 @@ async function fetch_master(luink) {
     return z;
 };
 
+    function rando(offset){
+        return Math.floor(Math.random() * offset) + 1;
+    };
 
 function monthDiff(date1, date2) {
   // Split the dates into day, month and year

@@ -31,7 +31,18 @@
     <span></span>
 <img src="/posya_img/Asset/menu.png">
 </div>
-<div id="displayUsername" class="abso cw">Username</div>
+<div id="displayUsername" class="abso cw">
+<div class="flex-col fc">
+    <div id="displayUsernameX"></div>
+    <div class="flex-row">
+        <div id="home"><a href="./index.html" class="cw">Home</a></div>
+        <div id="logout" class="cw anIcon">Logout</div>
+    </div>
+</div>
+
+</div>
+
+
 <div id="mainHeader" class="abso flex-row m0 p0 w100 thebg1">
     <div class="flex-col m0 p0 flex-30 ab">
     
@@ -65,12 +76,10 @@
     <iframe class="thebr1 thebbor2 thebs1i" id="theIframe" src="" style="z-index: 3;"></iframe>
 </div>
 
-
-
 </div>
 </body>
 </html>
-<script type="text/javascript" src="./posya_js/functions.js"></script>
+<script type="text/javascript" src="./posya_js/functions.js?1"></script>
 <script defer>
 //url menu disini
 let srcList;
@@ -84,8 +93,10 @@ let titleList;
 let titleIframePar = ["Isi Data Diri", "Jadwal Posyandu", "Isi Data Anak", "Tampil Semua Anak", "Data Kembang Anak"]
 let titleIframeEmp = ["Tambah Kunjungan Anak"]
 
+let accName = "none";
 let isParent = true;
-const displayUsername = document.getElementById("displayUsername");
+const logout = document.getElementById("logout");
+const displayUsername = document.getElementById("displayUsernameX");
 const header = document.getElementById("mainHeader");
 const toggler = document.getElementById("toggleMenu"); 
 const menu = document.getElementById("menuContainer");
@@ -94,6 +105,17 @@ const titleIframe = document.getElementById("titleIframe")
 const theIframe = document.getElementById("theIframe");
 let menulets;
 
+let isSpeaking = false;
+let spchVol = 1;
+let spchRate = 1;
+
+logout.addEventListener('click', function(){
+    if(confirm("Logout Akun "+accName+"?")){
+        location.href = "./php/logout.php";
+    };
+
+
+});
 
 //menggerakkan iframe container
 makeShitMove(content);
@@ -104,9 +126,16 @@ function runMenu(){
     menulets = document.getElementsByClassName("letzCon");
     for (i = 0, len = menulets.length; i < len; i++) {
         addMenuletsListener(i);
-    }
-}
+    };
+};
 
+document.onkeydown = function (e) {
+  e = e || window.event; //capture the event, and ensure we have an event
+  var key = e.code || e.key || e.which || e.keyCode; //find the key that was pressed
+  if (key === "KeyEscape" || key === "Escape" || key === 27) { //this is for 'T'
+    toggleMenu();
+  };
+};
 
 //fungsi untuk menambahkan html ikon
 let listAsset;
@@ -152,6 +181,13 @@ function showMenu(){
     menu.style.display = "block";
 }
 
+let animC = 1;
+function randoAnim(type){
+let anime1 = " 0.5s linear";
+let final = type+rando(animC)+anime1;
+menu.style.animation = final;
+}
+
 
 //untuk menyembunyikan/menampilkan menu
 toggler.addEventListener("click", toggleMenu);
@@ -159,14 +195,14 @@ let isToggled = true;
 function toggleMenu(){
     if(isToggled){
 
-        menu.style.animation = "close1 0.5s linear";
+        randoAnim('close');
         toggler.style.webkitFilter  = "invert(40%)";
         setTimeout(hideMenu, 510);
         
 
     }else{
         toggler.style.webkitFilter  = "invert(0%)";
-        menu.style.animation = "open1 0.5s linear";
+        randoAnim('open');
         showMenu();
         
     };
@@ -177,6 +213,7 @@ function toggleMenu(){
 CRUD_master("/php/user/get_user.php").then(
     function (value) { 
             x = value[0].name;
+            accName = value[0].name;
             if(x != undefined)
             {   
                 if(value[0].utype == 'o' || value[0].utyoe == 'O'){
@@ -200,29 +237,71 @@ CRUD_master("/php/user/get_user.php").then(
         },
     function (error) { alert("Database Error!") }
 );
+
+function speak(text){
+    let spch = new SpeechSynthesisUtterance(text);
+    spch.rate = spchRate;
+    isSpeaking = true;
+    speechSynthesis.speak(spch);
+    spch.addEventListener('end', function(){
+        isSpeaking = false;
+    });
+}
+
+function pause(){
+    if(speechSynthesis.speaking){speechSynthesis.pause();};
+}
+function resume(){
+    speechSynthesis.resume();
+}
+function stop(){
+    speechSynthesis.resume();
+    speechSynthesis.cancel();
+}
+
+animC = 4;
 </script>
 <style>
 
 @keyframes close1 {
-  0% {
-    left: 0;
-
-  }
-  100% {
-    left: 100%;
-    top: 50%;
-  }
+  0% {left: 0;}
+  100% { left: 100%;}
 }
+@keyframes close2 {
+  0% {left: 0;}
+  100% {top: 100%}
+}
+@keyframes close3 {
+  0% {left: 0;}
+  100% {top: 88%; left: 100%}
+}
+@keyframes close4 {
+  0% {transform: scale(100%);}
+  100% {transform: scale(0%);}
+}
+
 
 @keyframes open1 {
-  0% {
-    left: 100%;
-  }
-  100% {
-    left: 0;
-  }
+  0% {left: 100%;}
+  100% {left: 0;}
 }
 
+@keyframes open2 {
+  0% {top: 100%;}
+  100% {top: 5%;}
+}
+@keyframes open3 {
+  0% {top: 88%; left: 100%;}
+  100% {top: 5%; left: 0;}
+}
+@keyframes open4 {
+  0% {transform: scale(0%);}
+  100% {transform: scale(100%);}
+}
+
+#home{
+    margin-right: 30px;
+}
 
 #mainHeader{
     height: 9vh;
@@ -282,7 +361,8 @@ CRUD_master("/php/user/get_user.php").then(
 
 @media screen and (orientation:landscape) {
     #displayUsername{
-        left: 10vw;
+        right: 10%;
+        top: 3%;
     }
     #mainHeader{
         border: none;
@@ -341,7 +421,8 @@ CRUD_master("/php/user/get_user.php").then(
 
 @media screen and (orientation:portrait) {
     #displayUsername{
-        left: 10vw;
+        right: 10%;
+        top: 3%;
     }
     #mainHeader{
         border: none;
