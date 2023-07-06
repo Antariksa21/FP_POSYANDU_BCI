@@ -29,7 +29,7 @@
     <span></span>
     <span></span>
     <span></span>
-<img src="/posya_img/Asset/menu.png">
+<img id="toggleImg" src="/posya_img/Asset/menu.png">
 </div>
 <div id="displayUsername" class="abso cw">
 <div class="flex-col fc">
@@ -99,6 +99,7 @@ const logout = document.getElementById("logout");
 const displayUsername = document.getElementById("displayUsernameX");
 const header = document.getElementById("mainHeader");
 const toggler = document.getElementById("toggleMenu"); 
+const toggImg = document.getElementById("toggleImg"); 
 const menu = document.getElementById("menuContainer");
 const content = document.getElementById("contentContainer");
 const titleIframe = document.getElementById("titleIframe")
@@ -197,11 +198,15 @@ function toggleMenu(){
 
         randoAnim('close');
         toggler.style.webkitFilter  = "invert(40%)";
+        toggler.style.webkitFilter  = "opacity(30%)";
+        toggImg.style.webkitFilter  = "opacity(30%)";
         setTimeout(hideMenu, 510);
         
 
     }else{
         toggler.style.webkitFilter  = "invert(0%)";
+        toggler.style.webkitFilter  = "opacity(100%)";
+        toggImg.style.webkitFilter  = "opacity(100%)";
         randoAnim('open');
         showMenu();
         

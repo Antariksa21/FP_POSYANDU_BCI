@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="flex-col w100 gradient p0 m0" style="height: 100vh; position: relative; align-items: center; justify-content: center;">
-<div class="login-box flex-col oxyh m0" style="align-items: left; ">
+<div class="login-box flex-col oxyh m0" style="align-items: left; " id="logBox">
   <h2>Login</h2>
   <form action="php/loggin.php" method="post">
     <div class="user-box">
@@ -33,5 +33,19 @@
   </form>
 </div>
 </div>
+<style>
+
+
+@media screen and (orientation:landscape) {
+
+}
+
+@media screen and (orientation:portrait) {
+  #logBox{
+    width: 90%;  
+  }
+}
+
+</style>
 </body>
 </html>
