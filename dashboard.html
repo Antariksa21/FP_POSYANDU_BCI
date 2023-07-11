@@ -12,6 +12,7 @@
             align-items: left; 
             height: 100vh;
             overflow-x: hidden;
+            overflow-y: hidden;
         }
         .fc{align-items: center; justify-content: center;}
         .abso{position: absolute;}
@@ -185,32 +186,32 @@ function showMenu(){
     displayNav.style.zIndex = 5;
 }
 
-let animC = 1;
-function randoAnim(type){
-let anime1 = " 0.5s linear";
-let final = type+rando(animC)+anime1;
-menu.style.animation = final;
+function randoAnim(target, type, count){
+    let anime1 = " 0.8s linear";
+    let final = type+rando(count)+anime1;
+    target.style.animation = final;
 }
 
 
 //untuk menyembunyikan/menampilkan menu
+let aniMenuCount = 2;
 toggler.addEventListener("click", toggleMenu);
 let isToggled = true;
 function toggleMenu(){
     if(isToggled){
 
-        randoAnim('close');
+        randoAnim(menu, 'close', aniMenuCount);
         toggler.style.webkitFilter  = "invert(40%)";
         toggler.style.webkitFilter  = "opacity(30%)";
         toggImg.style.webkitFilter  = "opacity(30%)";
-        setTimeout(hideMenu, 510);
+        setTimeout(hideMenu, 810);
         
 
     }else{
         toggler.style.webkitFilter  = "invert(0%)";
         toggler.style.webkitFilter  = "opacity(100%)";
         toggImg.style.webkitFilter  = "opacity(100%)";
-        randoAnim('open');
+        randoAnim(menu, 'open', aniMenuCount);
         showMenu();
         
     };
@@ -267,45 +268,16 @@ function stop(){
     speechSynthesis.cancel();
 }
 
-animC = 4;
 </script>
 <style>
 
-@keyframes close1 {
-  0% {left: 0;}
-  100% { left: 100%;}
-}
-@keyframes close2 {
-  0% {left: 0;}
-  100% {top: 100%}
-}
-@keyframes close3 {
-  0% {left: 0;}
-  100% {top: 88%; left: 100%}
-}
-@keyframes close4 {
-  0% {transform: scale(100%);}
-  100% {transform: scale(0%);}
+@keyframes switch1 {
+    0% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);  }
+    50%{transform: perspective(1000px) rotateX(0deg) rotateY(180deg) rotateZ(0deg); }
+    100% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); }
 }
 
 
-@keyframes open1 {
-  0% {left: 100%;}
-  100% {left: 0;}
-}
-
-@keyframes open2 {
-  0% {top: 100%;}
-  100% {top: 5%;}
-}
-@keyframes open3 {
-  0% {top: 88%; left: 100%;}
-  100% {top: 5%; left: 0;}
-}
-@keyframes open4 {
-  0% {transform: scale(0%);}
-  100% {transform: scale(100%);}
-}
 
 #home{
     margin-right: 30px;
@@ -389,7 +361,10 @@ animC = 4;
     #menuContainer{
         width: 20vw;
         height: 90vh; 
-        top: 5vw;
+        top: 9vw;   
+        left: 0;
+        transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg);
+        padding-left: 0;
     }
     #contentContainer{
         top: 15vh;
@@ -425,9 +400,52 @@ animC = 4;
     #contentHeader{
         display: flex;
     }
+    @keyframes close1 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg);}
+        50%{transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 9vw; padding-left: 1vh; }
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 100%; padding-left: 1vh; }
+    }
+
+
+    @keyframes open1 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 100%; padding-left: 1vh; }
+        50%{transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg); top: 9vw; padding-left: 1vh; }
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg); }
+    }
+   
+    @keyframes close2 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg); filter: opacity(100%);}
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(360deg) rotateZ(0deg); top: 100%; padding-left: 1vh; filter: opacity(0%);}
+    }
+
+
+    @keyframes open2 {
+        0% {transform: perspective(1000px) rotateX(0deg) rotateY(360deg) rotateZ(0deg); top: 100%; padding-left: 1vh; filter: opacity(0%);}
+        100% {transform: perspective(1000px) rotateX(0deg) rotateY(32deg) rotateZ(0deg); filter: opacity(100%);}
+    }
 }
 
 @media screen and (orientation:portrait) {
+    @keyframes close1 {
+        0% {}
+        100% {top: 100%;}
+    }
+
+    @keyframes open1 {
+        0% {top: 100%;}
+        100% {}
+    }
+
+    @keyframes close2 {
+        0% {left: 0;}
+        100% {left: -20vw;}
+    }
+
+    @keyframes open2 {
+        0% {left: -20vw;}
+        100% {left: 0;}
+    }
+
     #displayUsername{
         right: 10%;
         top: 3%;
