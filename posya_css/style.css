@@ -18,7 +18,7 @@ body {
 .logo {
   float: left;
   margin-left: 46px;
-  padding: 0px 38px;
+  padding: 0;
   font-family: "Raleway", sans-serif;
   font-size: 25px;
   font-weight: bold;
@@ -44,7 +44,6 @@ body {
   list-style: none;
   cursor: pointer;
   float: right;
-  margin-right: 140px;
   margin-left: 31px;
   width: auto;
 }

@@ -96,6 +96,7 @@ let titleIframeEmp = ["Tambah Kunjungan Anak"]
 let accName = "none";
 let isParent = true;
 const logout = document.getElementById("logout");
+const displayNav = document.getElementById("displayUsername");
 const displayUsername = document.getElementById("displayUsernameX");
 const header = document.getElementById("mainHeader");
 const toggler = document.getElementById("toggleMenu"); 
@@ -177,9 +178,11 @@ function addMenuletsListener(index){
 
 function hideMenu(){
     menu.style.display = "none";
+    displayNav.style.zIndex = 3;
 }
 function showMenu(){
     menu.style.display = "block";
+    displayNav.style.zIndex = 5;
 }
 
 let animC = 1;
