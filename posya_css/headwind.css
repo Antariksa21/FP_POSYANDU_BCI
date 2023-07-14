@@ -53,6 +53,9 @@ body {
 .flex-70{
     flex-basis: 70%;
 }
+.flex-80{
+    flex-basis: 80%;
+}
 .flex-90{
     flex-basis: 90%;
 }

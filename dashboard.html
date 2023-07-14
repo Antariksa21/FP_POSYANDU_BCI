@@ -20,7 +20,7 @@
         
     </style>
     <link rel="stylesheet" href="./posya_css/form.css?12345">
-    <link rel="stylesheet" href="./posya_css/headwind.css?da33ds">
+    <link rel="stylesheet" href="./posya_css/headwind.css?da33dfs">
     <title>Dashboard</title>
 </head>
 <body>
@@ -43,13 +43,53 @@
 
 </div>
 
+<div id="conSpeech">
+    <div class="flex-row" style="height: 4vh;">
+        <div class="flex-80"></div>
+        <div class="flex-10 thebbor1 thebr1 anIcon" id="dragSpeech"></div>
+    </div>
+    <div class="flex-col w100">
+        <div class="flex-row w100 fc">
+            <div class="flex-col flex-10" id="textBack">
+
+                <div class="cimg border3">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <img src="posya_img\audio\previous.png" alt="Back">
+                </div>
+
+            </div>
+            <div class="flex-80 fc" style="text-align: center;" id="conSpeaker">
+                <p>Assistant</p>
+            </div>
+            <div class="flex-col flex-10" id="textNext">
+                <div class="cimg border3">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <img src="posya_img\audio\next.png" alt="Next">
+                </div>
+
+            </div>
+        </div>
+        <div class="flex-row w100 fc">
+            <div class="flex-90 fc" style="text-align: center;" >
+                <p id="theText1">Click Next To Continue</p>
+            </div>
+        </div>
+    </div>
+</div>
+
 
 <div id="mainHeader" class="abso flex-row m0 p0 w100 thebg1">
     <div class="flex-col m0 p0 flex-30 ab">
     
     </div>
     <div class="flex-col m0 p0 flex-70 fc">
-        <h1 id="headerTxt" class="cw">Welcome to E-Posyandu Dashboard</h1>
+        <h1 id="headerTxt" class="cw anIcon">Welcome to E-Posyandu Dashboard</h1>
     </div>
     <div class="flex-col m0 p0 flex-30">
     </div>
@@ -91,8 +131,8 @@ let srcListPar =
 let srcListEmp = ["posya_form/tambah_kunjungan.html"];
 
 let titleList;
-let titleIframePar = ["Isi Data Diri", "Jadwal Posyandu", "Isi Data Anak", "Tampil Semua Anak", "Data Kembang Anak"]
-let titleIframeEmp = ["Tambah Kunjungan Anak"]
+let titleIframePar = ["Isi Data Diri", "Jadwal Posyandu", "Isi Data Anak", "Tampil Semua Anak", "Data Kembang Anak"];
+let titleIframeEmp = ["Tambah Kunjungan Anak"];
 
 let accName = "none";
 let isParent = true;
@@ -100,6 +140,7 @@ const logout = document.getElementById("logout");
 const displayNav = document.getElementById("displayUsername");
 const displayUsername = document.getElementById("displayUsernameX");
 const header = document.getElementById("mainHeader");
+const headerTxt = document.getElementById("headerTxt");
 const toggler = document.getElementById("toggleMenu"); 
 const toggImg = document.getElementById("toggleImg"); 
 const menu = document.getElementById("menuContainer");
@@ -108,20 +149,55 @@ const titleIframe = document.getElementById("titleIframe")
 const theIframe = document.getElementById("theIframe");
 let menulets;
 
+//speech shit
+const conSpeech = document.getElementById('conSpeech');
+const textNext = document.getElementById('textNext');
+const textBack = document.getElementById('textBack');
+const speechText = document.getElementById('theText1');
+
+let voices = window.speechSynthesis.getVoices();
 let isSpeaking = false;
-let spchVol = 1;
+let spchVol = 0.5;
 let spchRate = 1;
+
+//tutorial data
+let quest1 = [
+['Hello, how are you?', '.'],
+['I will be your assistant today!', '.'],
+['Welcome to the main dashboard!', '.'],
+['I will guide you to understand the Menu!', '.'],
+['The menus are on the left. There are 5 menus!', '.'],
+['The first menu is your detailed information. It is displayed on a responsive form that doubles as an input and an output.', 0],
+['The second menu is the schedule. You can see when the clinic is opened or closed.', 1],
+['The third menu is the add child form. You can add your child information there. If you have multiple child, just press the menu again and add another child.', 2],
+['The fourth menu is the view child menu. You can see your childs information there.', 3],
+['The fifth menu is the child development report graph. You can see your child\'s development history, and compare it to ideal child growth based on age and gender.', 4],
+['thats all i can show you for now.', '.'],
+['a', 'end']
+];
+
+//trigger tutorial
+headerTxt.addEventListener('click', runTutorial);
+function runTutorial(){
+    if(isParent){
+    if(confirm("Apakah Anda ingin Menjalani Tutorial? ")){
+        quest(quest1);
+    };
+    }else{
+        alert("Anda bukan Orang Tua!");
+    }
+
+};
 
 logout.addEventListener('click', function(){
     if(confirm("Logout Akun "+accName+"?")){
         location.href = "./php/logout.php";
     };
-
-
 });
 
 //menggerakkan iframe container
 makeShitMove(content);
+makeShitMove(conSpeech);
 
 //menambahkan eventlistener ke ikon menu agar dapat menavigasi iframe
 function runMenu(){
@@ -136,7 +212,7 @@ document.onkeydown = function (e) {
   e = e || window.event; //capture the event, and ensure we have an event
   var key = e.code || e.key || e.which || e.keyCode; //find the key that was pressed
   if (key === "KeyEscape" || key === "Escape" || key === 27) { //this is for 'T'
-    toggleMenu();
+    toggleMenu(); setTimeout(test1, 2000);
   };
 };
 
@@ -179,7 +255,6 @@ function addMenuletsListener(index){
 
 function hideMenu(){
     menu.style.display = "none";
-    displayNav.style.zIndex = 3;
 }
 function showMenu(){
     menu.style.display = "block";
@@ -204,6 +279,7 @@ function toggleMenu(){
         toggler.style.webkitFilter  = "invert(40%)";
         toggler.style.webkitFilter  = "opacity(30%)";
         toggImg.style.webkitFilter  = "opacity(30%)";
+        displayNav.style.zIndex = 3;
         setTimeout(hideMenu, 810);
         
 
@@ -223,6 +299,7 @@ CRUD_master("/php/user/get_user.php").then(
     function (value) { 
             x = value[0].name;
             accName = value[0].name;
+            quest1[0][0] = 'Hello '+ accName + ", How are You?";
             if(x != undefined)
             {   
                 if(value[0].utype == 'o' || value[0].utyoe == 'O'){
@@ -231,6 +308,7 @@ CRUD_master("/php/user/get_user.php").then(
                     titleList = titleIframePar;
                     listAsset = listAssetO;
                     runMenu();
+
                 }else{
                     displayUsername.innerText = "Logged in as Employee: " + x;
                     srcList = srcListEmp;
@@ -250,10 +328,12 @@ CRUD_master("/php/user/get_user.php").then(
 function speak(text){
     let spch = new SpeechSynthesisUtterance(text);
     spch.rate = spchRate;
+    spch.volume = spchVol;
     isSpeaking = true;
     speechSynthesis.speak(spch);
     spch.addEventListener('end', function(){
         isSpeaking = false;
+        speechText.innerHTML = speechText.innerText + '<br><br>' + " Click Next to Continue!";
     });
 }
 
@@ -267,6 +347,66 @@ function stop(){
     speechSynthesis.resume();
     speechSynthesis.cancel();
 }
+
+function quest(raw){
+    let arr = raw;
+    conSpeech.style.display = 'block';
+    let current = 0;
+
+    function end(){
+        conSpeech.style.display = 'none';
+        action(-1);
+        return true;
+    };
+
+    function action(actionIndex){
+        for(let i=0; i<menulets.length; i++){
+            if(i==actionIndex){
+                menulets[i].style.animation = 'highlight1 1s linear alternate infinite';
+            }else{
+                menulets[i].style.animation = 'none';
+            }
+        }
+    }
+
+    speechText.innerHTML = 'Click Next To Continue';
+
+    function back(){
+        current = current-2;
+        if(current<0){end();};
+        stop();
+        console.log(current);console.log('haha');
+        speak(arr[current][0].toString());
+        speechText.innerHTML = arr[current][0];
+        if(arr[current][1] != '.'){
+            action(arr[current][1]);
+        };
+        current = current + 1;
+    }
+    function next(){
+        if(arr[current][1] == 'end'){end();};
+
+        
+        if(arr[current][1] != '.'){
+            action(arr[current][1]);
+        };
+
+        stop();
+        speak(arr[current][0].toString());
+        speechText.innerHTML = arr[current][0];
+        current = current + 1;
+
+    }
+
+    textBack.addEventListener('click', back);
+    textNext.addEventListener('click', next);
+}
+
+
+
+
+
+
 
 </script>
 <style>
@@ -286,6 +426,40 @@ function stop(){
 #mainHeader{
     height: 9vh;
     z-index: 2;
+}
+#conSpeech{
+    position: absolute;
+    resize: both;
+    overflow: auto;
+    z-index: 420;
+    display: none;
+}
+#textNext{
+    align-items: flex-start;
+}
+
+#textBack{
+    align-items: flex-end;
+}
+#textBack .cimg{
+    height: 100%;
+    background: #f8f3e8;
+}
+#textNext .cimg{
+    height: 100%;
+    background: #f8f3e8;
+}
+#textBack .cimg img{
+    height: 100%;
+}
+#textNext .cimg img{
+    height: 100%;
+}
+#conSpeech{
+    color: white;
+}
+#conSpeaker{
+    border-bottom: 2px solid white;
 }
 #headerTxt{
     z-index: 3;
@@ -343,6 +517,21 @@ function stop(){
     #displayUsername{
         right: 10%;
         top: 3%;
+    }
+    #conSpeech{
+        width: 80vw;
+        left: 10vw;
+        top: 70vh;
+    }
+    #textNext, #textBack{
+        height: 50px;
+    }
+
+    #conSpeaker{
+        font-size: 20px;
+    }
+    #theText{
+        font-size: 15px;
     }
     #mainHeader{
         border: none;
@@ -450,6 +639,21 @@ function stop(){
         right: 10%;
         top: 3%;
     }
+    #conSpeech{
+        width: 90vw;
+        left: 5vw;
+        top: 70vh;
+    }
+    #textNext, #textBack{
+        height: 60px;
+    }
+
+    #conSpeaker{
+        font-size: 20px;
+    }
+    #theText{
+        font-size: 15px;
+    }
     #mainHeader{
         border: none;
     }
@@ -543,6 +747,51 @@ function stop(){
   }
   50%,100% {
     bottom: 100%;
+  }
+}
+
+@keyframes highlight1 {
+  0% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid var(--warna1);
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid transparent;
+  }
+  40% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  45% {
+    border-left: 13px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  50% {
+    border-left: 23px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  55% {
+    border-left: 13px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  60% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid var(--warna1);
+    border-bottom: 3px solid transparent;
+  }
+  100% {
+    border-left: 3px solid transparent;
+    border-top: 3px solid transparent;
+    border-right: 3px solid transparent;
+    border-bottom: 3px solid var(--warna1);
   }
 }
 .letzCon:hover > .border2 span:nth-child(1) {

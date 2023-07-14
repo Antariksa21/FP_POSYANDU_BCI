@@ -128,9 +128,6 @@
     text-align: center;
     transform: translate(-50%, -50%);
     background-color: rgba(255,255,255,0.65);
-    padding-left: 40px;
-    padding-right: 40px;
-    padding-bottom: 20px;
     transition: 1s;
   }
 
@@ -151,6 +148,7 @@
   }
 
 
+
 @media screen and (orientation:landscape) {
   #img1 {
     top: 25vh;
@@ -166,6 +164,9 @@
     left: 54vw;
     width: 35vw;
     transform: perspective(1000px) rotateX(0deg) rotateY(-15deg) rotateZ(0deg);
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 20px;
   }
   #title:hover {
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg);
@@ -174,23 +175,25 @@
 }
 @media screen and (orientation:portrait) {
   #img1 {
-    top: 15vh;
-    left: 30vw;
-    width: 40vw;
+    top: 18vh;
+    left: 20vw;
+    width: 60vw;
   }
   #title{
-    top: 60vh;   
+    top: 70vh;   
     left: 50vw;
-    width: 64vw;
+    width: 94vw;
     text-align: justify;
+    padding-left: 30px;
+    padding-right: 30px;
+    padding-bottom: 20px;
   }
   #theTitle h1{
-    font-size: 40px;
+    font-size: 35px;
     text-align: center;
   }
-
   .logo{
-    top: 8vh;
+    top: 9vh;
   }
 
 }
